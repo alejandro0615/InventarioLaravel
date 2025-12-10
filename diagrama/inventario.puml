@@ -1,0 +1,40 @@
+@startuml inventario
+!define ERD
+
+entity "Producto" as producto {
+  * id_producto : int <<PK>>
+  --
+  nombre : varchar
+  descripcion : text
+  codigo : varchar
+  stock_actual : int
+  stock_minimo : int
+  precio_compra : decimal
+  precio_venta : decimal
+}
+
+entity "Proveedor" as proveedor {
+  * id_proveedor : int <<PK>>
+  --
+  nombre : varchar
+  telefono : varchar
+  email : varchar
+  direccion : varchar
+}
+
+entity "MovimientoInventario" as movimiento {
+  * id_movimiento : int <<PK>>
+  --
+  id_producto : int <<FK>>
+  id_proveedor : int <<FK>>
+  tipo : enum('entrada','salida')
+  fecha : datetime
+  cantidad : int
+  observaciones : text
+}
+
+' Relaciones
+proveedor ||--o{ producto : "suministra"
+producto ||--o{ movimiento : "tiene"
+proveedor ||--o{ movimiento : "origina (entradas)"
+@enduml
